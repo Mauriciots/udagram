@@ -5,9 +5,12 @@ const envConfig = config.dev;
 
 const DEFAULT_EXPIRATION = 60 * 5;
 
-//Configure AWS
-const credentials = new AWS.SharedIniFileCredentials({ profile: envConfig.storage.profile });
-AWS.config.credentials = credentials;
+// Configure AWS
+// Use local profile if available
+if (envConfig.storage.profile) {
+  const credentials = new AWS.SharedIniFileCredentials({ profile: envConfig.storage.profile });
+  AWS.config.credentials = credentials;
+}
 
 const s3 = new AWS.S3({
   signatureVersion: 'v4',
