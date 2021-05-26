@@ -14,3 +14,12 @@ export const findById = async (id: number): Promise<FeedItem | null> => {
   }
   return item;
 };
+
+export const create = async (caption: string, fileName: string): Promise<FeedItem | null> => {
+  const item = new FeedItem({
+    caption,
+    url: storageService.getGetSignedUrl(fileName),
+  });
+  const savedItem = await item.save();
+  return savedItem;
+};

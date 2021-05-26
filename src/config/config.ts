@@ -15,6 +15,9 @@ const config = {
       region: process.env.STORAGE_REGION,
       profile: process.env.STORAGE_PROFILE,
       bucket: process.env.STORAGE_BUCKET,
+    },
+    jwt: {
+      secret: process.env.JWT_SECRET,
     }
   }
 };

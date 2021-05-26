@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import FeedItem from '../../models/feedItem.model';
 import { feedItemService, storageService } from '../../services';
+import auth from '../../middlewares/auth';
 
 const router = Router();
+router.use(auth);
 
 router.get('/', async (_req, res) => {
   const items = await feedItemService.findAll();
@@ -38,16 +39,11 @@ router.post('/', async (req, res) => {
     return res.status(400).json('feed item should have attributes caption and fileName');
   }
 
-  const item = new FeedItem({
-    caption,
-    url: fileName,
-  });
-
-  await item.save();
+  const item = await feedItemService.create(caption, fileName);
 
   res.status(201).json({
-    caption,
-    url: storageService.getGetSignedUrl(fileName),
+    caption: item?.caption,
+    url: item?.url,
   });
 });
 
